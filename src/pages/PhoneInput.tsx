@@ -188,51 +188,28 @@ const PhoneInput = () => {
             gap: 3,
           }}
         >
-          <Typography 
-            variant="h6" 
-            component="h2" 
-            align="center"
+          <Typography
+            variant="h6"
             sx={{
+              color: 'text.secondary',
               fontWeight: 500,
-              color: theme.palette.primary.main,
               mb: 1,
-              fontSize: '1.2rem',
             }}
           >
             สะสมแต้ม
           </Typography>
-          <Box
+          <Typography
+            variant="h3"
             sx={{
-              textAlign: 'center',
-              mb: 2,
-              animation: 'float 3s ease-in-out infinite',
-              '@keyframes float': {
-                '0%': {
-                  transform: 'translateY(0px)',
-                },
-                '50%': {
-                  transform: 'translateY(-10px)',
-                },
-                '100%': {
-                  transform: 'translateY(0px)',
-                },
-              },
+              fontWeight: 700,
+              color: '#000',
+              textShadow: '2px 2px 4px rgba(0,0,0,0.1)',
+              letterSpacing: '-0.5px',
+              mb: 3,
             }}
           >
-            <Typography
-              variant="h3"
-              component="h1"
-              sx={{
-                fontWeight: 700,
-                color: '#000',
-                fontFamily: 'Kanit',
-                textShadow: '2px 2px 4px rgba(0,0,0,0.1)',
-                letterSpacing: '1px',
-              }}
-            >
-              Moma's Tea Point
-            </Typography>
-          </Box>
+            Moma's Tea Point
+          </Typography>
           <form onSubmit={handleSubmit} style={{ width: '100%' }}>
             <TextField
               fullWidth
@@ -254,9 +231,10 @@ const PhoneInput = () => {
                 '& .MuiInputLabel-root': {
                   fontFamily: 'Kanit',
                 },
+                mb: 3,
               }}
             />
-            <Stack direction="row" spacing={2} sx={{ mt: 3 }}>
+            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
               <Button
                 type="button"
                 fullWidth
@@ -284,9 +262,9 @@ const PhoneInput = () => {
               >
                 สะสมแต้ม
               </Button>
-            </Stack>
+            </Box>
             {currentPoints !== null && currentPoints >= 10 && (
-              <Stack direction="row" spacing={2} sx={{ mt: 2 }}>
+              <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, mt: 2 }}>
                 <Button
                   type="button"
                   fullWidth
@@ -319,7 +297,7 @@ const PhoneInput = () => {
                 >
                   ล้างข้อมูล
                 </Button>
-              </Stack>
+              </Box>
             )}
           </form>
         </Paper>
