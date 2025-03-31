@@ -4,8 +4,6 @@ import {
   TextField, 
   Button, 
   Typography, 
-  Alert,
-  Snackbar,
   Dialog,
   DialogTitle,
   DialogContent,
@@ -17,7 +15,6 @@ import { supabase } from '../lib/supabase';
 const PhoneInput = () => {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [message, setMessage] = useState('');
-  const [severity, setSeverity] = useState<'success' | 'error'>('success');
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [currentPoints, setCurrentPoints] = useState<number | null>(null);
   const [openRedeemDialog, setOpenRedeemDialog] = useState(false);
@@ -43,12 +40,10 @@ const PhoneInput = () => {
       
       setCurrentPoints(currentPoints - 10);
       setMessage('แลกแต้มสำเร็จ! คุณได้รับน้ำชา 1 แก้ว');
-      setSeverity('success');
       setOpenRedeemDialog(false);
     } catch (error) {
       console.error('Error:', error);
       setMessage(error instanceof Error ? error.message : 'เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง');
-      setSeverity('error');
     } finally {
       setOpenSnackbar(true);
     }
@@ -81,8 +76,6 @@ const PhoneInput = () => {
     } catch (error) {
       console.error('Error:', error);
       setMessage(error instanceof Error ? error.message : 'เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง');
-      setSeverity('error');
-      setOpenSnackbar(true);
       setCurrentPoints(null);
     } finally {
       setIsLoading(false);
@@ -132,12 +125,10 @@ const PhoneInput = () => {
         setCurrentPoints(1);
       }
 
-      setSeverity('success');
       setPhoneNumber('');
     } catch (error) {
       console.error('Error:', error);
       setMessage(error instanceof Error ? error.message : 'เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง');
-      setSeverity('error');
     } finally {
       setOpenSnackbar(true);
     }
@@ -151,7 +142,6 @@ const PhoneInput = () => {
     setPhoneNumber('');
     setCurrentPoints(null);
     setMessage('ล้างข้อมูลในฟอร์มเรียบร้อย');
-    setSeverity('success');
     setOpenClearDialog(false);
     setOpenSnackbar(true);
   };
