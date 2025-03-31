@@ -4,11 +4,8 @@ import {
   TextField, 
   Button, 
   Typography, 
-  Container,
-  Paper,
   Alert,
   Snackbar,
-  useTheme,
   Dialog,
   DialogTitle,
   DialogContent,
@@ -18,7 +15,6 @@ import {
 import { supabase } from '../lib/supabase';
 
 const PhoneInput = () => {
-  const theme = useTheme();
   const [phoneNumber, setPhoneNumber] = useState('');
   const [message, setMessage] = useState('');
   const [severity, setSeverity] = useState<'success' | 'error'>('success');
