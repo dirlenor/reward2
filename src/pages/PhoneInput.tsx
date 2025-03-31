@@ -16,7 +16,7 @@ import {
   DialogActions,
   CircularProgress
 } from '@mui/material';
-import { supabase, PointRecord } from '../lib/supabase';
+import { supabase } from '../lib/supabase';
 
 const PhoneInput = () => {
   const theme = useTheme();
