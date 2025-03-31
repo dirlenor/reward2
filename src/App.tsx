@@ -1,6 +1,8 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import PhoneInput from './pages/PhoneInput';
-import { CssBaseline, ThemeProvider, createTheme } from '@mui/material';
+import { useState } from 'react'
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
+import { ThemeProvider, createTheme } from '@mui/material'
+import PhoneInput from './pages/PhoneInput'
+import './App.css'
 
 const theme = createTheme({
   typography: {
@@ -8,22 +10,18 @@ const theme = createTheme({
   },
   palette: {
     primary: {
-      main: '#1976d2',
+      main: '#667eea',
     },
     secondary: {
-      main: '#dc004e',
-    },
-    background: {
-      default: '#f0f2f5',
-      paper: 'rgba(255, 255, 255, 0.8)',
+      main: '#764ba2',
     },
   },
   components: {
     MuiPaper: {
       styleOverrides: {
         root: {
+          background: 'rgba(255, 255, 255, 0.8)',
           backdropFilter: 'blur(10px)',
-          backgroundColor: 'rgba(255, 255, 255, 0.8)',
           boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.37)',
           border: '1px solid rgba(255, 255, 255, 0.18)',
         },
@@ -61,14 +59,14 @@ const theme = createTheme({
 function App() {
   return (
     <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <Router>
+      <BrowserRouter basename="/reward2">
         <Routes>
           <Route path="/" element={<PhoneInput />} />
+          <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
-      </Router>
+      </BrowserRouter>
     </ThemeProvider>
-  );
+  )
 }
 
-export default App;
+export default App
