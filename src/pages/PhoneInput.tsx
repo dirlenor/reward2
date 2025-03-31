@@ -169,150 +169,201 @@ const PhoneInput = () => {
     <Box
       sx={{
         minHeight: '100vh',
+        width: '100%',
         display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-        py: 4,
+        flexDirection: 'column',
+        background: '#ffffff',
       }}
     >
-      <Container maxWidth="sm">
-        <Paper 
-          elevation={3} 
-          sx={{ 
-            p: 4,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            gap: 3,
+      {/* Header */}
+      <Box sx={{ 
+        p: 3, 
+        borderBottom: '1px solid #f5f5f7',
+        position: 'sticky',
+        top: 0,
+        background: '#ffffff',
+        zIndex: 1,
+      }}>
+        <Typography
+          variant="h5"
+          sx={{
+            fontWeight: 600,
+            color: '#1d1d1f',
+            textAlign: 'center',
           }}
         >
-          <Typography
-            variant="h6"
-            sx={{
-              color: 'text.secondary',
-              fontWeight: 500,
-              mb: 1,
+          Moma's Tea Point
+        </Typography>
+      </Box>
+
+      {/* Main Content */}
+      <Box sx={{ 
+        flex: 1, 
+        p: 3,
+        display: 'flex',
+        flexDirection: 'column',
+        gap: 3,
+      }}>
+        <Typography
+          variant="h6"
+          sx={{
+            color: '#86868b',
+            fontWeight: 500,
+            textAlign: 'center',
+          }}
+        >
+          สะสมแต้ม
+        </Typography>
+
+        <form onSubmit={handleSubmit} style={{ width: '100%' }}>
+          <TextField
+            fullWidth
+            label="เบอร์มือถือ"
+            variant="outlined"
+            value={phoneNumber}
+            onChange={handlePhoneNumberChange}
+            required
+            inputProps={{ 
+              pattern: "[0-9]*",
+              inputMode: "numeric",
+              maxLength: 10
             }}
-          >
-            สะสมแต้ม
-          </Typography>
-          <Typography
-            variant="h3"
             sx={{
-              fontWeight: 700,
-              color: '#000',
-              textShadow: '2px 2px 4px rgba(0,0,0,0.1)',
-              letterSpacing: '-0.5px',
+              '& .MuiOutlinedInput-root': {
+                height: '48px',
+                borderRadius: '8px',
+                backgroundColor: '#f5f5f7',
+                '&:hover fieldset': {
+                  borderColor: '#1d1d1f',
+                },
+              },
+              '& .MuiInputLabel-root': {
+                fontFamily: 'Kanit',
+              },
               mb: 3,
             }}
-          >
-            Moma's Tea Point
-          </Typography>
-          <form onSubmit={handleSubmit} style={{ width: '100%' }}>
-            <TextField
+          />
+
+          {/* Action Buttons */}
+          <Box sx={{ 
+            display: 'flex', 
+            flexDirection: 'column', 
+            gap: 2,
+          }}>
+            <Button
+              type="button"
               fullWidth
-              label="เบอร์มือถือ"
               variant="outlined"
-              value={phoneNumber}
-              onChange={handlePhoneNumberChange}
-              margin="normal"
-              required
-              inputProps={{ 
-                pattern: "[0-9]*",
-                inputMode: "numeric",
-                maxLength: 10
+              onClick={checkPoints}
+              sx={{ 
+                height: '48px',
+                fontSize: '1rem',
+                fontWeight: 500,
+                borderRadius: '8px',
+                borderColor: '#1d1d1f',
+                color: '#1d1d1f',
+                '&:hover': {
+                  borderColor: '#1d1d1f',
+                  backgroundColor: 'rgba(29, 29, 31, 0.04)',
+                },
               }}
+            >
+              เช็คยอดแต้ม
+            </Button>
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              sx={{ 
+                height: '48px',
+                fontSize: '1rem',
+                fontWeight: 500,
+                borderRadius: '8px',
+                backgroundColor: '#1d1d1f',
+                '&:hover': {
+                  backgroundColor: '#2d2d2f',
+                },
+              }}
+            >
+              สะสมแต้ม
+            </Button>
+          </Box>
+        </form>
+
+        {/* Redeem Section */}
+        {currentPoints !== null && currentPoints >= 10 && (
+          <Box sx={{ 
+            mt: 3,
+            p: 3,
+            backgroundColor: '#f5f5f7',
+            borderRadius: '12px',
+          }}>
+            <Typography
+              variant="subtitle1"
               sx={{
-                '& .MuiOutlinedInput-root': {
-                  height: '56px',
-                },
-                '& .MuiInputLabel-root': {
-                  fontFamily: 'Kanit',
-                },
-                mb: 3,
+                color: '#1d1d1f',
+                fontWeight: 500,
+                mb: 2,
+                textAlign: 'center',
               }}
-            />
+            >
+              คุณมีแต้มพอสำหรับแลกน้ำชา!
+            </Typography>
             <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
               <Button
                 type="button"
                 fullWidth
-                variant="outlined"
-                color="primary"
-                onClick={checkPoints}
+                variant="contained"
+                onClick={() => setOpenRedeemDialog(true)}
                 sx={{ 
                   height: '48px',
-                  fontSize: '1.1rem',
+                  fontSize: '1rem',
                   fontWeight: 500,
+                  borderRadius: '8px',
+                  backgroundColor: '#34c759',
+                  '&:hover': {
+                    backgroundColor: '#248a3d',
+                  },
                 }}
               >
-                เช็คยอดแต้ม
+                แลกน้ำชา (10 แต้ม)
               </Button>
               <Button
-                type="submit"
+                type="button"
                 fullWidth
-                variant="contained"
-                color="primary"
+                variant="text"
+                onClick={() => setOpenClearDialog(true)}
                 sx={{ 
                   height: '48px',
-                  fontSize: '1.1rem',
+                  fontSize: '1rem',
                   fontWeight: 500,
+                  color: '#ff3b30',
+                  '&:hover': {
+                    backgroundColor: 'rgba(255, 59, 48, 0.04)',
+                  },
                 }}
               >
-                สะสมแต้ม
+                ล้างข้อมูล
               </Button>
             </Box>
-            {currentPoints !== null && currentPoints >= 10 && (
-              <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, mt: 2 }}>
-                <Button
-                  type="button"
-                  fullWidth
-                  variant="contained"
-                  color="secondary"
-                  onClick={() => setOpenRedeemDialog(true)}
-                  sx={{ 
-                    height: '48px',
-                    fontSize: '1.1rem',
-                    fontWeight: 500,
-                    background: 'linear-gradient(45deg, #FF6B6B 30%, #FF8E53 90%)',
-                    '&:hover': {
-                      background: 'linear-gradient(45deg, #FF8E53 30%, #FF6B6B 90%)',
-                    },
-                  }}
-                >
-                  แลกน้ำชา (10 แต้ม)
-                </Button>
-                <Button
-                  type="button"
-                  fullWidth
-                  variant="outlined"
-                  color="error"
-                  onClick={() => setOpenClearDialog(true)}
-                  sx={{ 
-                    height: '48px',
-                    fontSize: '1.1rem',
-                    fontWeight: 500,
-                  }}
-                >
-                  ล้างข้อมูล
-                </Button>
-              </Box>
-            )}
-          </form>
-        </Paper>
-      </Container>
+          </Box>
+        )}
+      </Box>
+
+      {/* Dialogs */}
       <Snackbar 
         open={openSnackbar} 
-        autoHideDuration={6000} 
+        autoHideDuration={3000} 
         onClose={handleCloseSnackbar}
-        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+        sx={{ mb: 2 }}
       >
         <Alert 
           onClose={handleCloseSnackbar} 
           severity={severity} 
           sx={{ 
             width: '100%',
-            borderRadius: '12px',
+            borderRadius: '8px',
             fontFamily: 'Kanit',
           }}
         >
@@ -323,28 +374,46 @@ const PhoneInput = () => {
       <Dialog 
         open={openRedeemDialog} 
         onClose={() => setOpenRedeemDialog(false)}
+        fullWidth
+        maxWidth="xs"
         PaperProps={{
           sx: {
             borderRadius: '16px',
-            padding: '16px',
+            m: 2,
           }
         }}
       >
-        <DialogTitle sx={{ textAlign: 'center', fontFamily: 'Kanit' }}>
+        <DialogTitle sx={{ 
+          textAlign: 'center', 
+          fontFamily: 'Kanit',
+          fontSize: '1.25rem',
+          fontWeight: 600,
+          color: '#1d1d1f',
+          pt: 3,
+        }}>
           ยืนยันการแลกแต้ม
         </DialogTitle>
         <DialogContent>
-          <Typography sx={{ textAlign: 'center', fontFamily: 'Kanit' }}>
+          <Typography sx={{ 
+            textAlign: 'center', 
+            fontFamily: 'Kanit',
+            color: '#86868b',
+            mt: 1,
+          }}>
             คุณต้องการแลกแต้ม 10 แต้มเพื่อรับน้ำชา 1 แก้ว ใช่หรือไม่?
           </Typography>
         </DialogContent>
-        <DialogActions sx={{ justifyContent: 'center', gap: 2 }}>
+        <DialogActions sx={{ justifyContent: 'center', gap: 2, p: 3 }}>
           <Button 
             onClick={() => setOpenRedeemDialog(false)}
             variant="outlined"
+            fullWidth
             sx={{ 
-              borderRadius: '25px',
+              borderRadius: '8px',
               fontFamily: 'Kanit',
+              borderColor: '#1d1d1f',
+              color: '#1d1d1f',
+              height: '44px',
             }}
           >
             ยกเลิก
@@ -352,12 +421,14 @@ const PhoneInput = () => {
           <Button 
             onClick={handleRedeem}
             variant="contained"
+            fullWidth
             sx={{ 
-              borderRadius: '25px',
+              borderRadius: '8px',
               fontFamily: 'Kanit',
-              background: 'linear-gradient(45deg, #FF6B6B 30%, #FF8E53 90%)',
+              backgroundColor: '#34c759',
+              height: '44px',
               '&:hover': {
-                background: 'linear-gradient(45deg, #FF8E53 30%, #FF6B6B 90%)',
+                backgroundColor: '#248a3d',
               },
             }}
           >
@@ -369,28 +440,46 @@ const PhoneInput = () => {
       <Dialog 
         open={openClearDialog} 
         onClose={() => setOpenClearDialog(false)}
+        fullWidth
+        maxWidth="xs"
         PaperProps={{
           sx: {
             borderRadius: '16px',
-            padding: '16px',
+            m: 2,
           }
         }}
       >
-        <DialogTitle sx={{ textAlign: 'center', fontFamily: 'Kanit' }}>
+        <DialogTitle sx={{ 
+          textAlign: 'center', 
+          fontFamily: 'Kanit',
+          fontSize: '1.25rem',
+          fontWeight: 600,
+          color: '#1d1d1f',
+          pt: 3,
+        }}>
           ยืนยันการล้างข้อมูล
         </DialogTitle>
         <DialogContent>
-          <Typography sx={{ textAlign: 'center', fontFamily: 'Kanit' }}>
+          <Typography sx={{ 
+            textAlign: 'center', 
+            fontFamily: 'Kanit',
+            color: '#86868b',
+            mt: 1,
+          }}>
             คุณต้องการล้างข้อมูลในฟอร์ม ใช่หรือไม่?
           </Typography>
         </DialogContent>
-        <DialogActions sx={{ justifyContent: 'center', gap: 2 }}>
+        <DialogActions sx={{ justifyContent: 'center', gap: 2, p: 3 }}>
           <Button 
             onClick={() => setOpenClearDialog(false)}
             variant="outlined"
+            fullWidth
             sx={{ 
-              borderRadius: '25px',
+              borderRadius: '8px',
               fontFamily: 'Kanit',
+              borderColor: '#1d1d1f',
+              color: '#1d1d1f',
+              height: '44px',
             }}
           >
             ยกเลิก
@@ -398,10 +487,15 @@ const PhoneInput = () => {
           <Button 
             onClick={handleClear}
             variant="contained"
-            color="error"
+            fullWidth
             sx={{ 
-              borderRadius: '25px',
+              borderRadius: '8px',
               fontFamily: 'Kanit',
+              backgroundColor: '#ff3b30',
+              height: '44px',
+              '&:hover': {
+                backgroundColor: '#d70015',
+              },
             }}
           >
             ยืนยัน
@@ -412,29 +506,37 @@ const PhoneInput = () => {
       <Dialog 
         open={openPointsDialog} 
         onClose={() => setOpenPointsDialog(false)}
+        fullWidth
+        maxWidth="xs"
         PaperProps={{
           sx: {
             borderRadius: '16px',
-            padding: '16px',
-            minWidth: '300px',
+            m: 2,
           }
         }}
       >
-        <DialogTitle sx={{ textAlign: 'center', fontFamily: 'Kanit' }}>
+        <DialogTitle sx={{ 
+          textAlign: 'center', 
+          fontFamily: 'Kanit',
+          fontSize: '1.25rem',
+          fontWeight: 600,
+          color: '#1d1d1f',
+          pt: 3,
+        }}>
           ข้อมูลแต้มสะสม
         </DialogTitle>
         <DialogContent>
-          <Box sx={{ textAlign: 'center', py: 2 }}>
+          <Box sx={{ textAlign: 'center', py: 3 }}>
             {isLoading ? (
-              <CircularProgress />
+              <CircularProgress size={40} sx={{ color: '#1d1d1f' }} />
             ) : (
               <>
                 <Typography 
-                  variant="h4" 
+                  variant="h3" 
                   sx={{ 
                     fontWeight: 700,
-                    color: theme.palette.primary.main,
-                    mb: 1,
+                    color: '#1d1d1f',
+                    mb: 2,
                     fontFamily: 'Kanit',
                   }}
                 >
@@ -442,8 +544,9 @@ const PhoneInput = () => {
                 </Typography>
                 <Typography 
                   sx={{ 
-                    color: 'text.secondary',
+                    color: '#86868b',
                     fontFamily: 'Kanit',
+                    fontSize: '1rem',
                   }}
                 >
                   เบอร์ {phoneNumber}
@@ -452,16 +555,18 @@ const PhoneInput = () => {
             )}
           </Box>
         </DialogContent>
-        <DialogActions sx={{ justifyContent: 'center', gap: 2 }}>
+        <DialogActions sx={{ justifyContent: 'center', p: 3 }}>
           <Button 
             onClick={() => setOpenPointsDialog(false)}
             variant="contained"
+            fullWidth
             sx={{ 
-              borderRadius: '25px',
+              borderRadius: '8px',
               fontFamily: 'Kanit',
-              background: 'linear-gradient(45deg, #667eea 30%, #764ba2 90%)',
+              backgroundColor: '#1d1d1f',
+              height: '44px',
               '&:hover': {
-                background: 'linear-gradient(45deg, #764ba2 30%, #667eea 90%)',
+                backgroundColor: '#2d2d2f',
               },
             }}
           >
