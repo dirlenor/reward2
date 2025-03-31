@@ -1,5 +1,5 @@
 import { HashRouter, Routes, Route, Navigate } from 'react-router-dom'
-import { ThemeProvider, createTheme } from '@mui/material'
+import { ThemeProvider, createTheme, CssBaseline } from '@mui/material'
 import PhoneInput from './pages/PhoneInput'
 import './App.css'
 
@@ -23,6 +23,22 @@ const theme = createTheme({
           backdropFilter: 'blur(10px)',
           boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.37)',
           border: '1px solid rgba(255, 255, 255, 0.18)',
+          borderRadius: '16px',
+          padding: '24px',
+          '@media (max-width: 600px)': {
+            borderRadius: '24px 24px 0 0',
+            minHeight: '100vh',
+            marginBottom: 0,
+          },
+        },
+      },
+    },
+    MuiContainer: {
+      styleOverrides: {
+        root: {
+          '@media (max-width: 600px)': {
+            padding: '0 !important',
+          },
         },
       },
     },
@@ -58,6 +74,7 @@ const theme = createTheme({
 function App() {
   return (
     <ThemeProvider theme={theme}>
+      <CssBaseline />
       <HashRouter>
         <Routes>
           <Route path="/" element={<PhoneInput />} />
