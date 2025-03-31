@@ -25,6 +25,10 @@ html, body, #root {
   overflow: hidden;
 }
 
+#root {
+  padding: 4%;
+}
+
 body {
   margin: 0;
   display: flex;
