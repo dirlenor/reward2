@@ -181,11 +181,13 @@ const PhoneInput = () => {
         zIndex: 1,
       }}>
         <Typography
-          variant="h5"
+          variant="h4"
           sx={{
-            fontWeight: 600,
+            fontWeight: 700,
             color: '#1d1d1f',
             textAlign: 'center',
+            fontSize: '2.2rem',
+            letterSpacing: '-0.5px',
           }}
         >
           Moma's Tea Point
@@ -346,26 +348,63 @@ const PhoneInput = () => {
         )}
       </Box>
 
-      {/* Dialogs */}
-      <Snackbar 
-        open={openSnackbar} 
-        autoHideDuration={3000} 
+      {/* Notification Dialog */}
+      <Dialog
+        open={openSnackbar}
         onClose={handleCloseSnackbar}
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
-        sx={{ mb: 2 }}
+        fullScreen
+        PaperProps={{
+          sx: {
+            backgroundColor: '#ffffff',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'center',
+            minHeight: '100vh',
+          }
+        }}
       >
-        <Alert 
-          onClose={handleCloseSnackbar} 
-          severity={severity} 
-          sx={{ 
-            width: '100%',
-            borderRadius: '8px',
-            fontFamily: 'Kanit',
-          }}
-        >
-          {message}
-        </Alert>
-      </Snackbar>
+        <Box sx={{
+          width: '100%',
+          maxWidth: '320px',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: 4,
+          p: 3,
+        }}>
+          <Typography
+            variant="h5"
+            sx={{ 
+              fontFamily: 'Kanit',
+              fontWeight: 600,
+              color: '#1d1d1f',
+              textAlign: 'center',
+              fontSize: '1.5rem',
+            }}
+          >
+            {message}
+          </Typography>
+          <Button 
+            onClick={handleCloseSnackbar}
+            variant="contained"
+            sx={{ 
+              borderRadius: '8px',
+              fontFamily: 'Kanit',
+              backgroundColor: '#1d1d1f',
+              height: '44px',
+              width: '140px',
+              fontSize: '1rem',
+              '&:hover': {
+                backgroundColor: '#2d2d2f',
+              },
+            }}
+          >
+            ปิด
+          </Button>
+        </Box>
+      </Dialog>
 
       <Dialog 
         open={openRedeemDialog} 
