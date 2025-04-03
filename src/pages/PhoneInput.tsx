@@ -170,18 +170,41 @@ const PhoneInput = () => {
         background: '#ffffff',
         zIndex: 1,
       }}>
-        <Typography
-          variant="h4"
+        <Box
           sx={{
-            fontWeight: 700,
-            color: '#1d1d1f',
-            textAlign: 'center',
-            fontSize: '2.2rem',
-            letterSpacing: '-0.5px',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            mb: 4
           }}
         >
-          Moma's Tea Point
-        </Typography>
+          <Box
+            component="img"
+            src="/images/milk-tea-logo.png"
+            alt="Moma's Tea Logo"
+            sx={{
+              width: 120,
+              height: 120,
+              mb: 2,
+              borderRadius: '50%',
+              border: '4px solid white',
+              boxShadow: '0 4px 20px rgba(0,0,0,0.1)',
+              objectFit: 'cover'
+            }}
+          />
+          <Typography
+            variant="h3"
+            sx={{
+              color: '#000',
+              fontWeight: 700,
+              textAlign: 'center',
+              letterSpacing: '1px',
+              textShadow: '2px 2px 4px rgba(0,0,0,0.1)'
+            }}
+          >
+            Moma's Tea Point
+          </Typography>
+        </Box>
       </Box>
 
       {/* Main Content */}
@@ -218,7 +241,7 @@ const PhoneInput = () => {
             }}
             sx={{
               '& .MuiOutlinedInput-root': {
-                height: '48px',
+                height: '56px',
                 borderRadius: '8px',
                 backgroundColor: '#f5f5f7',
                 '&:hover fieldset': {
