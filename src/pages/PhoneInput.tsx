@@ -179,13 +179,14 @@ const PhoneInput = () => {
           }}
         >
           <Typography
-            variant="h3"
+            variant="h5"
             sx={{
               color: '#000',
               fontWeight: 700,
               textAlign: 'center',
               letterSpacing: '1px',
-              textShadow: '2px 2px 4px rgba(0,0,0,0.1)'
+              textShadow: '2px 2px 4px rgba(0,0,0,0.1)',
+              fontSize: '1.8rem'
             }}
           >
             Moma's Tea Point
