@@ -178,20 +178,6 @@ const PhoneInput = () => {
             mb: 4
           }}
         >
-          <Box
-            component="img"
-            src="/images/milk-tea-logo.png"
-            alt="Moma's Tea Logo"
-            sx={{
-              width: 120,
-              height: 120,
-              mb: 2,
-              borderRadius: '50%',
-              border: '4px solid white',
-              boxShadow: '0 4px 20px rgba(0,0,0,0.1)',
-              objectFit: 'cover'
-            }}
-          />
           <Typography
             variant="h3"
             sx={{
