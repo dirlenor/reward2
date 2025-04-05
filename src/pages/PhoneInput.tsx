@@ -84,7 +84,9 @@ const PhoneInput = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+  };
+
+  const handleAddPoints = async (points: number) => {
     try {
       if (!/^[0-9]{10}$/.test(phoneNumber)) {
         throw new Error('กรุณากรอกเบอร์มือถือ 10 หลัก');
@@ -104,25 +106,25 @@ const PhoneInput = () => {
         const { error: updateError } = await supabase
           .from('points')
           .update({ 
-            points: existingRecord.points + 1,
+            points: existingRecord.points + points,
             updated_at: new Date().toISOString()
           })
           .eq('phone_number', phoneNumber);
 
         if (updateError) throw updateError;
-        setMessage(`อัพเดทแต้มสำเร็จ! ตอนนี้คุณมี ${existingRecord.points + 1} แต้ม`);
-        setCurrentPoints(existingRecord.points + 1);
+        setMessage(`อัพเดทแต้มสำเร็จ! เพิ่ม ${points} แต้ม ตอนนี้คุณมี ${existingRecord.points + points} แต้ม`);
+        setCurrentPoints(existingRecord.points + points);
       } else {
         const { error: insertError } = await supabase
           .from('points')
           .insert([{ 
             phone_number: phoneNumber,
-            points: 1
+            points: points
           }]);
 
         if (insertError) throw insertError;
-        setMessage('เพิ่มแต้มสำเร็จ! คุณได้รับ 1 แต้ม');
-        setCurrentPoints(1);
+        setMessage(`เพิ่มแต้มสำเร็จ! คุณได้รับ ${points} แต้ม`);
+        setCurrentPoints(points);
       }
 
       setPhoneNumber('');
@@ -154,11 +156,20 @@ const PhoneInput = () => {
   return (
     <Box
       sx={{
-        minHeight: '100vh',
+        minHeight: '100%',
         width: '100%',
         display: 'flex',
         flexDirection: 'column',
         background: '#ffffff',
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        overflowY: 'auto',
+        '@media (max-width: 600px)': {
+          minHeight: '-webkit-fill-available',
+        },
       }}
     >
       {/* Header */}
@@ -234,9 +245,15 @@ const PhoneInput = () => {
                 '&:hover fieldset': {
                   borderColor: '#1d1d1f',
                 },
+                '& input': {
+                  color: '#000000',
+                  fontSize: '1.1rem',
+                  fontWeight: 500,
+                },
               },
               '& .MuiInputLabel-root': {
                 fontFamily: 'Kanit',
+                color: '#666666',
               },
               mb: 3,
             }}
@@ -268,14 +285,42 @@ const PhoneInput = () => {
             >
               เช็คยอดแต้ม
             </Button>
+            <Box
+              sx={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(3, 1fr)',
+                gap: 2,
+                width: '100%',
+              }}
+            >
+              {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((points) => (
+                <Button
+                  key={points}
+                  onClick={() => handleAddPoints(points)}
+                  variant="contained"
+                  sx={{ 
+                    height: '48px',
+                    fontSize: '1.2rem',
+                    fontWeight: 600,
+                    borderRadius: '8px',
+                    backgroundColor: '#1d1d1f',
+                    '&:hover': {
+                      backgroundColor: '#2d2d2f',
+                    },
+                  }}
+                >
+                  {points}
+                </Button>
+              ))}
+            </Box>
             <Button
-              type="submit"
-              fullWidth
+              onClick={() => handleAddPoints(10)}
               variant="contained"
+              fullWidth
               sx={{ 
                 height: '48px',
-                fontSize: '1rem',
-                fontWeight: 500,
+                fontSize: '1.2rem',
+                fontWeight: 600,
                 borderRadius: '8px',
                 backgroundColor: '#1d1d1f',
                 '&:hover': {
@@ -283,7 +328,7 @@ const PhoneInput = () => {
                 },
               }}
             >
-              สะสมแต้ม
+              10
             </Button>
           </Box>
         </form>
