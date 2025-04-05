@@ -189,11 +189,11 @@ const PhoneInput = () => {
     setOpenSnackbar(false);
   };
 
-  const handleClear = () => {
+  const handleClearData = () => {
     setPhoneNumber('');
     setCurrentPoints(null);
-    setMessage('ล้างข้อมูลในฟอร์มเรียบร้อย');
     setOpenClearDialog(false);
+    setMessage('ล้างข้อมูลในฟอร์มเรียบร้อย');
     setOpenSnackbar(true);
   };
 
@@ -313,6 +313,7 @@ const PhoneInput = () => {
             display: 'flex', 
             flexDirection: 'column', 
             gap: 2,
+            mb: 2
           }}>
             <Box sx={{
               display: 'flex',
@@ -359,52 +360,78 @@ const PhoneInput = () => {
                 ดูประวัติ
               </Button>
             </Box>
-            <Box
-              sx={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(3, 1fr)',
-                gap: 2,
-                width: '100%',
-              }}
-            >
-              {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((points) => (
-                <Button
-                  key={points}
-                  onClick={() => handleAddPoints(points)}
-                  variant="contained"
-                  sx={{ 
-                    height: '48px',
-                    fontSize: '1.2rem',
-                    fontWeight: 600,
-                    borderRadius: '8px',
-                    backgroundColor: '#1d1d1f',
-                    '&:hover': {
-                      backgroundColor: '#2d2d2f',
-                    },
-                  }}
-                >
-                  +{points}
-                </Button>
-              ))}
-            </Box>
+
+            {/* Clear Data Button */}
             <Button
-              onClick={() => handleAddPoints(10)}
-              variant="contained"
+              type="button"
               fullWidth
+              variant="outlined"
+              onClick={() => setOpenClearDialog(true)}
               sx={{ 
                 height: '48px',
-                fontSize: '1.2rem',
-                fontWeight: 600,
+                fontSize: '1rem',
+                fontWeight: 500,
                 borderRadius: '8px',
-                backgroundColor: '#1d1d1f',
+                borderColor: '#1d1d1f',
+                color: '#1d1d1f',
                 '&:hover': {
-                  backgroundColor: '#2d2d2f',
+                  borderColor: '#1d1d1f',
+                  backgroundColor: 'rgba(29, 29, 31, 0.04)',
                 },
               }}
             >
-              +10
+              ล้างข้อมูลในฟอร์ม
             </Button>
           </Box>
+          <Box
+            sx={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(3, 1fr)',
+              gap: 2,
+              width: '100%',
+              mb: 2,
+            }}
+          >
+            {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((points) => (
+              <Button
+                key={points}
+                onClick={() => handleAddPoints(points)}
+                variant="contained"
+                sx={{ 
+                  height: '56px',
+                  fontSize: '1.5rem',
+                  fontWeight: 600,
+                  borderRadius: '12px',
+                  backgroundColor: '#1d1d1f',
+                  width: '100%',
+                  minWidth: 'unset',
+                  padding: 0,
+                  '&:hover': {
+                    backgroundColor: '#2d2d2f',
+                  },
+                }}
+              >
+                +{points}
+              </Button>
+            ))}
+          </Box>
+          <Button
+            onClick={() => handleAddPoints(10)}
+            variant="contained"
+            sx={{ 
+              height: '56px',
+              fontSize: '1.5rem',
+              fontWeight: 600,
+              borderRadius: '12px',
+              backgroundColor: '#1d1d1f',
+              width: '100%',
+              '&:hover': {
+                backgroundColor: '#2d2d2f',
+              },
+            }}
+          >
+            +10
+          </Button>
         </form>
 
         {/* Redeem Section */}
@@ -614,41 +641,47 @@ const PhoneInput = () => {
           ยืนยันการล้างข้อมูล
         </DialogTitle>
         <DialogContent>
-          <Typography sx={{ 
-            textAlign: 'center', 
-            fontFamily: 'Kanit',
-            color: '#86868b',
-            mt: 1,
-          }}>
+          <Typography 
+            sx={{ 
+              textAlign: 'center',
+              fontFamily: 'Kanit',
+              color: '#1d1d1f',
+              mt: 1
+            }}
+          >
             คุณต้องการล้างข้อมูลในฟอร์ม ใช่หรือไม่?
           </Typography>
         </DialogContent>
-        <DialogActions sx={{ justifyContent: 'center', gap: 2, p: 3 }}>
+        <DialogActions sx={{ justifyContent: 'center', p: 3, gap: 2 }}>
           <Button 
             onClick={() => setOpenClearDialog(false)}
             variant="outlined"
-            fullWidth
             sx={{ 
               borderRadius: '8px',
               fontFamily: 'Kanit',
               borderColor: '#1d1d1f',
               color: '#1d1d1f',
               height: '44px',
+              flex: 1,
+              '&:hover': {
+                borderColor: '#1d1d1f',
+                backgroundColor: 'rgba(29, 29, 31, 0.04)',
+              },
             }}
           >
             ยกเลิก
           </Button>
           <Button 
-            onClick={handleClear}
+            onClick={handleClearData}
             variant="contained"
-            fullWidth
             sx={{ 
               borderRadius: '8px',
               fontFamily: 'Kanit',
-              backgroundColor: '#ff3b30',
+              backgroundColor: '#1d1d1f',
               height: '44px',
+              flex: 1,
               '&:hover': {
-                backgroundColor: '#d70015',
+                backgroundColor: '#2d2d2f',
               },
             }}
           >
