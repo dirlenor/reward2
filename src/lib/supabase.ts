@@ -14,7 +14,7 @@ if (!supabaseUrl || !supabaseAnonKey) {
 export const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 export interface PointRecord {
-  id: number;
+  id: string;
   phone_number: string;
   points: number;
   created_at: string;
