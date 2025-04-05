@@ -8,9 +8,20 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
-  CircularProgress
+  CircularProgress,
+  List,
+  ListItem,
+  ListItemText,
+  Divider
 } from '@mui/material';
 import { supabase } from '../lib/supabase';
+
+interface RedemptionHistory {
+  id: number;
+  phone_number: string;
+  points_used: number;
+  created_at: string;
+}
 
 const PhoneInput = () => {
   const [phoneNumber, setPhoneNumber] = useState('');
@@ -20,7 +31,9 @@ const PhoneInput = () => {
   const [openRedeemDialog, setOpenRedeemDialog] = useState(false);
   const [openClearDialog, setOpenClearDialog] = useState(false);
   const [openPointsDialog, setOpenPointsDialog] = useState(false);
+  const [openHistoryDialog, setOpenHistoryDialog] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [history, setHistory] = useState<RedemptionHistory[]>([]);
 
   const handleRedeem = async () => {
     try {
@@ -37,6 +50,16 @@ const PhoneInput = () => {
         .eq('phone_number', phoneNumber);
 
       if (updateError) throw updateError;
+
+      // บันทึกประวัติการแลก
+      const { error: historyError } = await supabase
+        .from('redemption_history')
+        .insert([{ 
+          phone_number: phoneNumber,
+          points_used: 10,
+        }]);
+
+      if (historyError) throw historyError;
       
       setCurrentPoints(currentPoints - 10);
       setMessage('แลกแต้มสำเร็จ! คุณได้รับน้ำชา 1 แก้ว');
@@ -46,6 +69,32 @@ const PhoneInput = () => {
       setMessage(error instanceof Error ? error.message : 'เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง');
     } finally {
       setOpenSnackbar(true);
+    }
+  };
+
+  const handleViewHistory = async () => {
+    try {
+      setIsLoading(true);
+      const { data, error } = await supabase
+        .from('redemption_history')
+        .select(`
+          *,
+          points!inner (
+            phone_number
+          )
+        `)
+        .order('created_at', { ascending: false });
+
+      if (error) throw error;
+
+      setHistory(data || []);
+      setOpenHistoryDialog(true);
+    } catch (error) {
+      console.error('Error:', error);
+      setMessage(error instanceof Error ? error.message : 'เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง');
+      setOpenSnackbar(true);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -265,26 +314,51 @@ const PhoneInput = () => {
             flexDirection: 'column', 
             gap: 2,
           }}>
-            <Button
-              type="button"
-              fullWidth
-              variant="outlined"
-              onClick={checkPoints}
-              sx={{ 
-                height: '48px',
-                fontSize: '1rem',
-                fontWeight: 500,
-                borderRadius: '8px',
-                borderColor: '#1d1d1f',
-                color: '#1d1d1f',
-                '&:hover': {
+            <Box sx={{
+              display: 'flex',
+              gap: 2,
+            }}>
+              <Button
+                type="button"
+                fullWidth
+                variant="outlined"
+                onClick={checkPoints}
+                sx={{ 
+                  height: '48px',
+                  fontSize: '1rem',
+                  fontWeight: 500,
+                  borderRadius: '8px',
                   borderColor: '#1d1d1f',
-                  backgroundColor: 'rgba(29, 29, 31, 0.04)',
-                },
-              }}
-            >
-              เช็คยอดแต้ม
-            </Button>
+                  color: '#1d1d1f',
+                  '&:hover': {
+                    borderColor: '#1d1d1f',
+                    backgroundColor: 'rgba(29, 29, 31, 0.04)',
+                  },
+                }}
+              >
+                เช็คยอดแต้ม
+              </Button>
+              <Button
+                type="button"
+                fullWidth
+                variant="outlined"
+                onClick={handleViewHistory}
+                sx={{ 
+                  height: '48px',
+                  fontSize: '1rem',
+                  fontWeight: 500,
+                  borderRadius: '8px',
+                  borderColor: '#1d1d1f',
+                  color: '#1d1d1f',
+                  '&:hover': {
+                    borderColor: '#1d1d1f',
+                    backgroundColor: 'rgba(29, 29, 31, 0.04)',
+                  },
+                }}
+              >
+                ดูประวัติ
+              </Button>
+            </Box>
             <Box
               sx={{
                 display: 'grid',
@@ -638,6 +712,105 @@ const PhoneInput = () => {
         <DialogActions sx={{ justifyContent: 'center', p: 3 }}>
           <Button 
             onClick={() => setOpenPointsDialog(false)}
+            variant="contained"
+            fullWidth
+            sx={{ 
+              borderRadius: '8px',
+              fontFamily: 'Kanit',
+              backgroundColor: '#1d1d1f',
+              height: '44px',
+              '&:hover': {
+                backgroundColor: '#2d2d2f',
+              },
+            }}
+          >
+            ปิด
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      {/* History Dialog */}
+      <Dialog 
+        open={openHistoryDialog} 
+        onClose={() => setOpenHistoryDialog(false)}
+        fullWidth
+        maxWidth="md"
+        PaperProps={{
+          sx: {
+            borderRadius: '16px',
+            m: 2,
+          }
+        }}
+      >
+        <DialogTitle sx={{ 
+          textAlign: 'center', 
+          fontFamily: 'Kanit',
+          fontSize: '1.25rem',
+          fontWeight: 600,
+          color: '#1d1d1f',
+          pt: 3,
+        }}>
+          ประวัติการแลกแต้มทั้งหมด
+        </DialogTitle>
+        <DialogContent>
+          {isLoading ? (
+            <Box sx={{ display: 'flex', justifyContent: 'center', py: 3 }}>
+              <CircularProgress size={40} sx={{ color: '#1d1d1f' }} />
+            </Box>
+          ) : history.length > 0 ? (
+            <List>
+              {history.map((item, index) => (
+                <Box key={item.id}>
+                  <ListItem>
+                    <ListItemText
+                      primary={
+                        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                          <Typography sx={{ fontFamily: 'Kanit', fontWeight: 500 }}>
+                            เบอร์ {item.phone_number}
+                          </Typography>
+                          <Typography sx={{ fontFamily: 'Kanit', fontWeight: 500 }}>
+                            แลกน้ำชา 1 แก้ว (-10 แต้ม)
+                          </Typography>
+                        </Box>
+                      }
+                      secondary={
+                        <Typography sx={{ 
+                          textAlign: 'right',
+                          fontFamily: 'Kanit',
+                          color: '#86868b',
+                          fontSize: '0.875rem'
+                        }}>
+                          {new Date(item.created_at).toLocaleString('th-TH', {
+                            year: 'numeric',
+                            month: 'long',
+                            day: 'numeric',
+                            hour: '2-digit',
+                            minute: '2-digit',
+                          })}
+                        </Typography>
+                      }
+                    />
+                  </ListItem>
+                  {index < history.length - 1 && <Divider />}
+                </Box>
+              ))}
+            </List>
+          ) : (
+            <Typography 
+              sx={{ 
+                textAlign: 'center', 
+                py: 3,
+                color: '#86868b',
+                fontFamily: 'Kanit'
+              }}
+            >
+              ยังไม่มีประวัติการแลกแต้ม
+            </Typography>
+          )}
+        </DialogContent>
+        <DialogActions sx={{ justifyContent: 'center', p: 3 }}>
+          <Button 
+            onClick={() => setOpenHistoryDialog(false)}
             variant="contained"
             fullWidth
             sx={{ 
