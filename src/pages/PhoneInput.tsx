@@ -189,7 +189,7 @@ const PhoneInput = () => {
               fontSize: '1.8rem'
             }}
           >
-            Moma's Tea Point
+            ร้าน ICE-T
           </Typography>
         </Box>
       </Box>
@@ -210,7 +210,8 @@ const PhoneInput = () => {
             textAlign: 'center',
           }}
         >
-          สะสมแต้ม
+          สะสมแต้ม 
+        
         </Typography>
 
         <form onSubmit={handleSubmit} style={{ width: '100%' }}>
@@ -269,18 +270,18 @@ const PhoneInput = () => {
               เช็คยอดแต้ม
             </Button>
             <Button
-              type="submit"
               fullWidth
               variant="contained"
-              sx={{ 
-                height: '48px',
-                fontSize: '1rem',
-                fontWeight: 500,
-                borderRadius: '8px',
-                backgroundColor: '#1d1d1f',
+              type="submit"
+              sx={{
+                backgroundColor: '#ff0000',
                 '&:hover': {
-                  backgroundColor: '#2d2d2f',
+                  backgroundColor: '#cc0000',
                 },
+                height: '56px',
+                borderRadius: '8px',
+                fontSize: '1.1rem',
+                fontWeight: 600,
               }}
             >
               สะสมแต้ม
