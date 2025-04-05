@@ -309,7 +309,7 @@ const PhoneInput = () => {
                     },
                   }}
                 >
-                  {points}
+                  +{points}
                 </Button>
               ))}
             </Box>
@@ -328,7 +328,7 @@ const PhoneInput = () => {
                 },
               }}
             >
-              10
+              +10
             </Button>
           </Box>
         </form>
